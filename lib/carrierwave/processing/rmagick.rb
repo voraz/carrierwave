@@ -1,6 +1,6 @@
 # encoding: utf-8
 
-unless defined? Magick 
+unless defined? Magick
   begin
     require 'rmagick'
   rescue LoadError
@@ -224,6 +224,25 @@ module CarrierWave
     end
 
     ##
+    # Change the image quality
+    #
+    # === Parameters
+    #
+    # [perc (Integer)] between 0 and 100
+    #
+    # === Yields
+    #
+    # [Magick::Image] additional manipulations to perform
+    #
+    def quality(perc)
+      manipulate! do |img|
+        img.write(current_path){self.quality=perc} if img.quality!=perc
+        img = yield(img) if block_given?
+        img
+      end
+    end
+
+    ##
     # Manipulate the image with RMagick. This method will load up an image
     # and then pass each of its frames to the supplied block. It will then
     # save the image to disk.
@@ -269,10 +288,11 @@ module CarrierWave
     end
 
   private
-  
+
     def destroy_image(image)
       image.destroy! if image.respond_to?(:destroy!)
     end
 
   end # RMagick
 end # CarrierWave
+
