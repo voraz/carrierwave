@@ -97,6 +97,8 @@ elsif defined?(Sinatra)
 
 end
 
+puts "-------------------"
+puts defined?(MongoMapper)
 
 require File.join(File.dirname(__FILE__), "carrierwave", "orm", 'activerecord') if defined?(ActiveRecord)
 require File.join(File.dirname(__FILE__), "carrierwave", "orm", 'datamapper') if defined?(DataMapper)
